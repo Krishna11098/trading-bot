@@ -3,25 +3,25 @@
 A production‑ready **algorithmic trading bot** designed for **intraday & swing trading** using a hybrid of **rule‑based technical strategies + machine learning models**. This project focuses on **robust backtesting, realistic paper trading, performance analytics, and extensibility**.
 
 
-##  Table of Contents
+## Table of Contents
 
-- Overview
-- Features
-- System Architecture
-- Tech Stack & Libraries Used
-- Story behind ml model selection
-- Installation & Setup
-- How to Start the Bot
-- Strategy Logic Explained
-- Machine Learning Models
-- Performance Metrics
-- Operating Modes
-- Logging & Debugging
-- Disclaimer
+- [Overview](#overview)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [Project Structure](#project-structure)
+- [Tech Stack & Libraries Used](#tech-stack--libraries-used)
+- [Installation & Setup](#installation--setup)
+- [How to Start the Bot](#how-to-start-the-bot)
+- [Strategy Logic Explained](#strategy-logic-explained)
+- [Machine Learning Models](#machine-learning-models)
+- [Performance Metrics](#performance-metrics)
+- [Operating Modes](#operating-modes)
+- [Logging & Debugging](#logging--debugging)
+- [Disclaimer](#disclaimer)
 
 ---
 
-##  Overview
+## Overview
 
 This bot is designed to:
 
@@ -31,34 +31,81 @@ This bot is designed to:
 * Be **modular**, **auditable**, and **strategy‑agnostic**
 
 
-##  Features
+## Features
 
- Hybrid Rule‑Based (NOT entirely scalping or positional) + ML Strategy
- Intraday & multi‑day support
- Realistic transaction costs
- Walk‑forward friendly architecture
- No repainting indicators
- Config‑driven strategy weights
- Performance & drawdown tracking
- Safe paper trading mode
+- Hybrid Rule‑Based (NOT entirely scalping or positional) + ML Strategy
+- Intraday & multi‑day support
+- Realistic transaction costs & slippage modeling
+- Walk‑forward friendly architecture
+- No repainting indicators
+- Config‑driven strategy weights
+- Comprehensive risk management (position sizing, drawdown limits)
+- Performance & drawdown tracking
+- Safe paper trading mode
 
 ---
 
-##  System Architecture
+## System Architecture
 
 ```
-Data Source (yfinance)
+Data Source (yfinance / Kaggle)
+        ↓
+Data Validation & Cleaning
         ↓
 Feature Engineering (TA + price action)
         ↓
-Rule‑Based Strategies ──┐
-                         ├── Signal Fusion Engine → Risk Filter → Order Engine
-ML Prediction Engine ───┘
+┌─────────────────────────────────────────────────┐
+│                Signal Generation                 │
+├─────────────────────────────────────────────────┤
+│  Rule‑Based Strategies ──┐                       │
+│                           ├── Signal Fusion      │
+│  ML Prediction Engine ───┘                       │
+└─────────────────────────────────────────────────┘
         ↓
-Backtest / Paper Trade 
+Risk Manager (Position Sizing & Limits)
         ↓
-Performance Analytics
+Backtest / Paper Trade Engine
+        ↓
+Performance Reporter
 ```
+
+---
+
+## Project Structure
+
+```
+algo-trading-project/
+├── src/
+│   ├── api/                    # FastAPI REST endpoints
+│   ├── data_collection/        # Data downloaders (Kaggle, yfinance)
+│   ├── preprocessing/          # Data cleaning & feature engineering
+│   ├── modeling/               # ML model training & evaluation
+│   ├── strategy/               # Trading strategies
+│   │   ├── backtest.py         # Backtesting engine with metrics
+│   │   ├── combined_strategy.py # ML + Technical signal fusion
+│   │   └── scalping_logic.py   # Scalping signal generation
+│   └── utils/                  # Core utilities
+│       ├── config.py           # Configuration management
+│       ├── enums.py            # Type-safe enumerations
+│       ├── risk_manager.py     # Position sizing & risk control
+│       ├── performance.py      # Performance reporting
+│       ├── validators.py       # Data validation
+│       ├── logger.py           # Logging utilities
+│       └── helpers.py          # General helper functions
+├── notebooks/                  # Jupyter notebooks
+├── scripts/                    # CLI scripts
+└── tests/                      # Unit tests
+```
+
+### Key Modules
+
+| Module | Description |
+|--------|-------------|
+| `RiskManager` | Kelly Criterion sizing, drawdown limits, daily loss limits |
+| `PerformanceReporter` | Sharpe, Sortino, Calmar ratios, trade analysis |
+| `ProperBacktester` | Realistic backtesting with commission & slippage |
+| `CombinedStrategy` | Ensemble ML + technical signal generation |
+| `DataValidator` | OHLCV validation & data quality checks |
 
 ---
 
