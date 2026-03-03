@@ -1,0 +1,10 @@
+{
+  "capital": 1000000,
+  "peak_capital": 1000000,
+  "positions": [],
+  "completed_trades": [],
+  "pnl": 0.0,
+  "start_time": "2026-01-05T15:10:53.472497",
+  "last_candle_time": "2026-01-05T15:23:57.562418",
+  "candles_processed": 127
+}

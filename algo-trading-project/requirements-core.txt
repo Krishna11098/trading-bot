@@ -1,0 +1,12 @@
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+yfinance
+ta
+pandas-ta
+python-dotenv
+requests
+beautifulsoup4
+tqdm
